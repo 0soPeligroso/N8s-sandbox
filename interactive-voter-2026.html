@@ -1,0 +1,964 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SAMPLE BALLOT · 90034 · JUNE 2, 2026 · FISCAL AUDIT v2</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Barlow+Condensed:wght@400;600;700;900&family=Barlow:wght@400;500;600&display=swap');
+  :root {
+    --bg:#0b0e14;--surface:#13181f;--surface2:#1a2130;--border:#2a3545;
+    --text:#d4dde8;--muted:#6b7a8e;--pick:#00c87a;--avoid:#e53535;
+    --amber:#f5a623;--blue:#3a9cf5;--gray:#8a94a0;--red-alert:#ff2d55;
+    --dem:#3a9cf5;--rep:#e53535;--tax-flag:#ff6b35;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:'Barlow',sans-serif;background:var(--bg);color:var(--text);font-size:14px;line-height:1.5}
+
+  .site-header{background:var(--surface);border-bottom:2px solid var(--border);padding:12px 20px;display:flex;align-items:center;justify-content:space-between;gap:16px;position:sticky;top:0;z-index:100}
+  .site-header .logo{font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:18px;letter-spacing:.08em;text-transform:uppercase;color:#fff}
+  .site-header .logo span{color:var(--pick)}
+  .hdr-meta{font-family:'DM Mono',monospace;font-size:11px;color:var(--muted);text-align:right;line-height:1.6}
+  .hdr-actions{display:flex;gap:8px;flex-shrink:0}
+  .btn{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:12px;letter-spacing:.06em;text-transform:uppercase;padding:7px 14px;border-radius:4px;border:none;cursor:pointer;transition:opacity .15s,transform .1s}
+  .btn:active{transform:scale(.97)}
+  .btn-fill{background:var(--pick);color:#000}.btn-fill:hover{opacity:.85}
+  .btn-clear{background:var(--border);color:var(--text)}.btn-clear:hover{background:var(--surface2)}
+  .btn-print{background:var(--blue);color:#000}.btn-print:hover{opacity:.85}
+
+  .district-strip{background:var(--surface2);border-bottom:1px solid var(--border);display:flex;flex-wrap:wrap;font-family:'DM Mono',monospace;font-size:11px}
+  .ds-item{padding:6px 14px;border-right:1px solid var(--border);display:flex;flex-direction:column;gap:2px}
+  .ds-label{color:var(--muted)}.ds-value{color:var(--text);font-weight:500}
+
+  .legend-bar{background:var(--bg);border-bottom:1px solid var(--border);padding:8px 20px;display:flex;flex-wrap:wrap;gap:16px;font-size:11px;font-family:'DM Mono',monospace}
+  .leg-item{display:flex;align-items:center;gap:5px}
+  .leg-dot{width:10px;height:10px;border-radius:2px}
+  .lg-pick{background:var(--pick)}.lg-avoid{background:var(--avoid)}.lg-amber{background:var(--amber)}.lg-blue{background:var(--blue)}.lg-gray{background:var(--gray)}.lg-tax{background:var(--tax-flag)}
+
+  /* POLL */
+  .poll-section{margin:20px;background:var(--surface);border:1px solid var(--border);border-radius:6px;overflow:hidden}
+  .poll-header{background:var(--surface2);padding:12px 16px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--border);gap:10px}
+  .poll-title{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:14px;letter-spacing:.06em;text-transform:uppercase;color:#fff}
+  .poll-source{font-family:'DM Mono',monospace;font-size:10px;color:var(--muted)}
+  .poll-body{padding:16px}
+  .poll-bar-row{display:flex;align-items:center;gap:10px;margin-bottom:10px}
+  .pb-name{width:130px;font-size:12px;font-weight:600;flex-shrink:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .pb-track{flex:1;height:20px;background:var(--border);border-radius:3px;overflow:hidden}
+  .pb-fill{height:100%;border-radius:3px;transition:width .6s ease;display:flex;align-items:center;padding-left:8px;font-size:11px;font-weight:700;color:#000;font-family:'DM Mono',monospace}
+  .pb-fill.dem{background:var(--dem)}.pb-fill.rep{background:var(--avoid)}.pb-fill.npp{background:var(--gray)}
+  .pb-pct{width:46px;font-family:'DM Mono',monospace;font-size:12px;text-align:right;flex-shrink:0}
+  .stat-cards{display:flex;gap:12px;margin-top:16px;flex-wrap:wrap}
+  .stat-card{flex:1;min-width:160px;background:var(--surface2);border:1px solid var(--border);border-radius:4px;padding:10px 14px}
+  .sc-label{font-family:'DM Mono',monospace;font-size:10px;color:var(--muted);margin-bottom:4px;text-transform:uppercase}
+  .sc-value{font-family:'Barlow Condensed',sans-serif;font-size:20px;font-weight:700;color:#fff}
+  .sc-sub{font-size:11px;color:var(--muted);margin-top:2px}
+  .red-alert{background:#2a0a0a;border:2px solid var(--red-alert);border-radius:4px;padding:10px 14px;margin-top:14px;display:flex;gap:10px;align-items:flex-start}
+  .ra-icon{font-size:18px;line-height:1;flex-shrink:0}
+  .ra-text{font-size:12px;color:#ffaaaa;line-height:1.5}
+  .ra-text strong{color:var(--red-alert);font-size:13px}
+
+  .content{padding:20px}
+  .section-head{font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:13px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);padding:18px 0 8px;border-bottom:1px solid var(--border);margin-bottom:12px;display:flex;align-items:center;gap:10px}
+  .section-head .sh-num{background:var(--surface2);border:1px solid var(--border);border-radius:3px;padding:2px 7px;font-size:11px;color:var(--text)}
+
+  .race-block{background:var(--surface);border:1px solid var(--border);border-radius:6px;margin-bottom:10px;overflow:hidden}
+  .race-title-row{background:var(--surface2);padding:9px 14px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--border);gap:10px}
+  .race-title{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:13px;letter-spacing:.06em;text-transform:uppercase;color:var(--text)}
+  .race-badge{font-family:'DM Mono',monospace;font-size:9px;padding:2px 6px;border-radius:3px;text-transform:uppercase;letter-spacing:.06em;white-space:nowrap}
+  .rb-nonpartisan{background:#1e2d3d;color:var(--blue);border:1px solid #2a4060}
+  .rb-partisan{background:#1a2e1a;color:var(--pick);border:1px solid #2a4a2a}
+  .rb-measure{background:#2d2a1a;color:var(--amber);border:1px solid #4a401a}
+  .rb-judicial{background:#1a2030;color:var(--muted);border:1px solid var(--border)}
+
+  .candidate-row{display:flex;align-items:flex-start;gap:12px;padding:10px 14px;border-bottom:1px solid #1a2130;cursor:pointer;transition:background .12s;position:relative}
+  .candidate-row:last-child{border-bottom:none}
+  .candidate-row:hover{background:#151d28}
+  .candidate-row.selected{background:#0d1f18}
+  .candidate-row.selected .bubble{background:var(--pick);border-color:var(--pick)}
+  .candidate-row.selected .bubble::after{opacity:1}
+  .bubble{width:22px;height:22px;border-radius:50%;border:2px solid var(--border);flex-shrink:0;margin-top:2px;position:relative;transition:all .15s}
+  .bubble::after{content:'';position:absolute;inset:3px;border-radius:50%;background:#000;opacity:0;transition:opacity .15s}
+
+  .cand-content{flex:1;min-width:0}
+  .cand-name-row{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:3px}
+  .cand-name{font-weight:600;font-size:14px;color:#fff}
+  .party-badge{font-family:'DM Mono',monospace;font-size:10px;padding:1px 5px;border-radius:2px;font-weight:500}
+  .pb-dem{background:rgba(58,156,245,.2);color:#7ac4ff;border:1px solid rgba(58,156,245,.3)}
+  .pb-rep{background:rgba(229,53,53,.15);color:#ff9090;border:1px solid rgba(229,53,53,.25)}
+  .pb-npp{background:rgba(138,148,160,.15);color:#aab4bf;border:1px solid rgba(138,148,160,.25)}
+  .pb-np{background:rgba(160,140,200,.15);color:#c0a0e0;border:1px solid rgba(160,140,200,.25)}
+
+  .color-tag{display:inline-flex;align-items:center;gap:4px;font-family:'DM Mono',monospace;font-size:9px;padding:1px 6px;border-radius:2px;font-weight:700;letter-spacing:.04em;text-transform:uppercase}
+  .ct-pick{background:rgba(0,200,122,.2);color:var(--pick);border:1px solid rgba(0,200,122,.3)}
+  .ct-avoid{background:rgba(229,53,53,.2);color:var(--avoid);border:1px solid rgba(229,53,53,.3)}
+  .ct-amber{background:rgba(245,166,35,.2);color:var(--amber);border:1px solid rgba(245,166,35,.3)}
+  .ct-gray{background:rgba(138,148,160,.15);color:var(--gray);border:1px solid rgba(138,148,160,.25)}
+  .ct-blue{background:rgba(58,156,245,.15);color:var(--blue);border:1px solid rgba(58,156,245,.25)}
+
+  .tg-grade{display:inline-block;font-family:'DM Mono',monospace;font-size:11px;font-weight:700;padding:1px 6px;border-radius:3px;margin-left:4px}
+  .tg-green{background:rgba(0,200,122,.2);color:var(--pick);border:1px solid rgba(0,200,122,.3)}
+  .tg-yellow{background:rgba(245,166,35,.15);color:var(--amber);border:1px solid rgba(245,166,35,.25)}
+  .tg-red-grade{background:rgba(229,53,53,.15);color:#ff8080;border:1px solid rgba(229,53,53,.25)}
+
+  .cand-bg{font-size:12px;color:var(--muted);margin-bottom:4px}
+  .cand-details{display:flex;flex-direction:column;gap:4px}
+  .cand-logic{font-size:12px;color:#8ea8c0;line-height:1.5}
+  .cand-film{font-size:11px;color:var(--muted);font-style:italic}
+  .cand-film strong{color:var(--amber);font-style:normal}
+  .cand-flags{display:flex;flex-wrap:wrap;gap:4px;margin-top:3px}
+  .flag{font-family:'DM Mono',monospace;font-size:9px;padding:1px 5px;border-radius:2px;text-transform:uppercase;letter-spacing:.04em}
+  .fl-red{background:rgba(229,53,53,.15);color:#ff8080;border:1px solid rgba(229,53,53,.2)}
+  .fl-amber{background:rgba(245,166,35,.12);color:var(--amber);border:1px solid rgba(245,166,35,.2)}
+  .fl-gray{background:rgba(138,148,160,.12);color:var(--gray);border:1px solid rgba(138,148,160,.2)}
+  .fl-tax{background:rgba(255,107,53,.15);color:var(--tax-flag);border:1px solid rgba(255,107,53,.25)}
+
+  .endorse-row{font-size:11px;color:var(--muted);margin-top:3px}
+  .endorse-row strong{color:var(--text)}
+
+  /* TAX ALERT BOX */
+  .tax-alert{background:#1e1008;border:2px solid var(--tax-flag);border-radius:4px;padding:9px 13px;margin-bottom:8px;display:flex;gap:9px;align-items:flex-start}
+  .tax-alert-icon{font-size:16px;flex-shrink:0;line-height:1.2}
+  .tax-alert-text{font-size:12px;color:#ffc49a;line-height:1.5}
+  .tax-alert-text strong{color:var(--tax-flag)}
+
+  /* MEASURES */
+  .measure-content{padding:12px 14px}
+  .measure-q{font-size:13px;font-weight:600;color:var(--text);margin-bottom:6px}
+  .measure-detail{font-size:12px;color:var(--muted);line-height:1.6;margin-bottom:8px}
+  .measure-vote-row{display:flex;gap:10px}
+  .mv-btn{padding:7px 20px;border-radius:4px;font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:13px;letter-spacing:.06em;border:2px solid var(--border);cursor:pointer;background:transparent;color:var(--muted);transition:all .15s;text-transform:uppercase}
+  .mv-btn:hover{border-color:var(--text);color:var(--text)}
+  .mv-btn.sel-yes{background:var(--pick);border-color:var(--pick);color:#000}
+  .mv-btn.sel-no{background:var(--avoid);border-color:var(--avoid);color:#fff}
+
+  /* JUDICIAL */
+  .judicial-table{width:100%;border-collapse:collapse}
+  .judicial-table th,.judicial-table td{padding:8px 12px;text-align:left;vertical-align:top;border-bottom:1px solid var(--border);font-size:12px}
+  .judicial-table th{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);background:var(--surface2)}
+  .judicial-table tr:last-child td{border-bottom:none}
+  .bar-pill{font-family:'DM Mono',monospace;font-size:10px;padding:2px 6px;border-radius:3px;font-weight:700}
+  .bpEWQ{background:rgba(0,200,122,.2);color:var(--pick);border:1px solid rgba(0,200,122,.3)}
+  .bpWQ{background:rgba(58,156,245,.15);color:var(--blue);border:1px solid rgba(58,156,245,.25)}
+  .bpQ{background:rgba(245,166,35,.15);color:var(--amber);border:1px solid rgba(245,166,35,.25)}
+  .bpNQ{background:rgba(229,53,53,.15);color:#ff8080;border:1px solid rgba(229,53,53,.25)}
+  .bpUn{background:rgba(138,148,160,.1);color:var(--gray);border:1px solid rgba(138,148,160,.2)}
+
+  /* CHEAT SHEET */
+  .cheat-sheet{margin:20px;background:var(--surface);border:1px solid var(--border);border-radius:6px;overflow:hidden}
+  .cs-header{background:var(--surface2);padding:12px 16px;font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:14px;letter-spacing:.1em;text-transform:uppercase;color:var(--pick);border-bottom:1px solid var(--border)}
+  .cs-table{width:100%;border-collapse:collapse}
+  .cs-table th,.cs-table td{padding:7px 12px;text-align:left;vertical-align:top;border-bottom:1px solid var(--border);font-size:12px}
+  .cs-table th{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);background:#12181f}
+  .cs-table tr:last-child td{border-bottom:none}
+  .cs-pick{color:var(--pick);font-weight:600}.cs-avoid{color:var(--avoid)}.cs-yes{color:var(--pick);font-weight:700}.cs-no{color:var(--avoid);font-weight:700}.cs-race{font-weight:600}
+  .cs-tax{color:var(--tax-flag);font-size:10px;font-family:'DM Mono',monospace}
+
+  .ovf{overflow-x:auto}
+  .pv8{padding:8px 14px}
+  .uncontested-banner{font-family:'DM Mono',monospace;font-size:11px;color:var(--gray);padding:10px 14px;background:#13181f;border-top:1px solid var(--border)}
+
+  @media print{
+    .site-header .hdr-actions,.poll-section{display:none}
+    body{background:#fff;color:#000;font-size:11px}
+    .race-block,.cheat-sheet{border:1px solid #ccc;break-inside:avoid}
+    .content{padding:10px}
+    @page{size:letter;margin:.45in}
+  }
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header class="site-header">
+  <div class="logo">LA County <span>Ballot</span> · 90034</div>
+  <div class="hdr-meta">JUNE 2, 2026 · STATEWIDE DIRECT PRIMARY<br>PALMS / CHEVIOT HILLS · FISCAL AUDIT v2</div>
+  <div class="hdr-actions">
+    <button class="btn btn-fill" onclick="fillRecommendations()">Fill Recommendations</button>
+    <button class="btn btn-clear" onclick="clearAll()">Clear All</button>
+    <button class="btn btn-print" onclick="window.print()">Print</button>
+  </div>
+</header>
+
+<!-- DISTRICT STRIP -->
+<div class="district-strip">
+  <div class="ds-item"><div class="ds-label">ZIP</div><div class="ds-value">90034</div></div>
+  <div class="ds-item"><div class="ds-label">Neighborhood</div><div class="ds-value">Palms / Cheviot Hills</div></div>
+  <div class="ds-item"><div class="ds-label">State Senate</div><div class="ds-value">SD-28</div></div>
+  <div class="ds-item"><div class="ds-label">State Assembly</div><div class="ds-value">AD-55</div></div>
+  <div class="ds-item"><div class="ds-label">LA City Council</div><div class="ds-value">CD-5</div></div>
+  <div class="ds-item"><div class="ds-label">County Supervisor</div><div class="ds-value">BD-3</div></div>
+  <div class="ds-item"><div class="ds-label">LAUSD Board</div><div class="ds-value">D-4</div></div>
+</div>
+
+<!-- LEGEND -->
+<div class="legend-bar">
+  <div class="leg-item"><div class="leg-dot lg-pick"></div>PICK</div>
+  <div class="leg-item"><div class="leg-dot lg-avoid"></div>AVOID</div>
+  <div class="leg-item"><div class="leg-dot lg-amber"></div>CAUTION</div>
+  <div class="leg-item"><div class="leg-dot lg-blue"></div>BAR RATING</div>
+  <div class="leg-item"><div class="leg-dot lg-gray"></div>UNCONTESTED</div>
+  <div class="leg-item"><div class="leg-dot lg-tax"></div>🚩 YOU PAY THIS TAX</div>
+  <div class="leg-item">🟢 TRANSPARENT &nbsp; 🟡 VAGUE &nbsp; 🔴 NO PLAN</div>
+  <div class="leg-item" style="color:var(--tax-flag);font-size:10px;font-weight:700;">R* = Republican cleared social-liberal threshold</div>
+</div>
+
+<!-- GOVERNOR POLL -->
+<div class="poll-section">
+  <div class="poll-header">
+    <div class="poll-title">⚡ Governor's Race — RCP Poll Average (May 2026)</div>
+    <div class="poll-source">RealClearPolling / Emerson / David Binder Research</div>
+  </div>
+  <div class="poll-body">
+    <div class="poll-bar-row">
+      <div class="pb-name" style="color:#ff9090">Hilton (R) ✗</div>
+      <div class="pb-track"><div class="pb-fill rep" style="width:20.8%">20.8%</div></div>
+      <div class="pb-pct" style="color:var(--avoid)">20.8%</div>
+    </div>
+    <div class="poll-bar-row">
+      <div class="pb-name" style="color:#7ac4ff">Becerra (D) ✓</div>
+      <div class="pb-track"><div class="pb-fill dem" style="width:20.6%">20.6%</div></div>
+      <div class="pb-pct" style="color:var(--dem)">20.6%</div>
+    </div>
+    <div class="poll-bar-row">
+      <div class="pb-name" style="color:#7ac4ff">Steyer (D)</div>
+      <div class="pb-track"><div class="pb-fill dem" style="width:14.6%">14.6%</div></div>
+      <div class="pb-pct" style="color:var(--dem)">14.6%</div>
+    </div>
+    <div class="poll-bar-row">
+      <div class="pb-name" style="color:#ff9090">Bianco (R) ✗</div>
+      <div class="pb-track"><div class="pb-fill rep" style="width:12.4%">12.4%</div></div>
+      <div class="pb-pct" style="color:var(--avoid)">12.4%</div>
+    </div>
+    <div class="poll-bar-row">
+      <div class="pb-name" style="color:#7ac4ff">Porter (D)</div>
+      <div class="pb-track"><div class="pb-fill dem" style="width:9.3%">9.3%</div></div>
+      <div class="pb-pct" style="color:var(--dem)">9.3%</div>
+    </div>
+    <div class="poll-bar-row">
+      <div class="pb-name" style="color:#7ac4ff">Mahan (D)</div>
+      <div class="pb-track"><div class="pb-fill dem" style="width:7.0%">7.0%</div></div>
+      <div class="pb-pct" style="color:var(--dem)">7.0%</div>
+    </div>
+    <div class="poll-bar-row">
+      <div class="pb-name" style="color:#8a94a0">Other</div>
+      <div class="pb-track"><div class="pb-fill npp" style="width:3%"></div></div>
+      <div class="pb-pct" style="color:var(--gray)">3.0%</div>
+    </div>
+    <div class="stat-cards">
+      <div class="stat-card">
+        <div class="sc-label">RCP #1</div>
+        <div class="sc-value" style="color:var(--avoid)">Hilton (R)</div>
+        <div class="sc-sub">20.8% — Trump-backed, anti-sanctuary, anti-abortion agenda. DISQUALIFIED.</div>
+      </div>
+      <div class="stat-card">
+        <div class="sc-label">Best Dem</div>
+        <div class="sc-value" style="color:var(--dem)">Becerra (D)</div>
+        <div class="sc-sub">20.6% — Only viable Dem pick to hold top-two slot</div>
+      </div>
+      <div class="stat-card">
+        <div class="sc-label">Dem Split Risk</div>
+        <div class="sc-value" style="color:var(--amber)">HIGH</div>
+        <div class="sc-sub">Steyer + Porter drain ~24% of Dem vote</div>
+      </div>
+      <div class="stat-card">
+        <div class="sc-label">No Republican Cleared</div>
+        <div class="sc-value" style="color:var(--muted)">N/A</div>
+        <div class="sc-sub">Both Hilton (Trump/anti-abortion) and Bianco (Oath Keepers) are disqualified on social grounds</div>
+      </div>
+    </div>
+    <div class="red-alert">
+      <div class="ra-icon">🚨</div>
+      <div class="ra-text">
+        <strong>RED ALERT: VOTE-SPLIT CRISIS.</strong> Neither Republican clears the social-liberal threshold — Hilton actively campaigns to "move California toward life" (reduce abortion access), wants to eliminate all sanctuary policies, and touts his Trump relationship as an asset. Bianco has Oath Keepers ties and is anti-sanctuary. Both are hard disqualified. Vote Becerra strategically. Voting Steyer or Porter at current polling is a de facto assist to a Hilton-Bianco November lockout.
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- BALLOT -->
+<div class="content">
+
+<div class="section-head"><span class="sh-num">01</span> STATEWIDE OFFICES</div>
+
+<!-- GOVERNOR -->
+<div class="race-block">
+  <div class="race-title-row">
+    <div class="race-title">GOVERNOR OF CALIFORNIA</div>
+    <span class="race-badge rb-partisan">Top-Two Primary</span>
+  </div>
+  <div class="candidate-row" id="gov-becerra" onclick="selectCandidate('gov','gov-becerra')">
+    <div class="bubble"></div>
+    <div class="cand-content">
+      <div class="cand-name-row"><span class="cand-name">Xavier Becerra</span><span class="party-badge pb-dem">D</span><span class="color-tag ct-pick">✓ PICK</span><span class="tg-grade tg-green">🟢</span></div>
+      <div class="cand-bg">Fmr. U.S. HHS Secretary, CA Attorney General, U.S. Congressman (30 yrs). Law background — public life, not career politician origin.</div>
+      <div class="cand-details">
+        <div class="cand-logic">Top polling Dem (20.6%). Filed 67+ lawsuits as AG against Trump admin overreach. Most viable Dem to block Republican top-two scenario. Concrete anti-corruption and healthcare transparency platform. Anti-ICE overreach on public record.</div>
+        <div class="cand-film"><strong>Film/TV:</strong> Backs CA Film &amp; TV Jobs Act expansion as part of economic platform.</div>
+        <div class="endorse-row"><strong>Endorsements:</strong> Labor coalitions, CA Democratic clubs, healthcare orgs</div>
+        <div class="cand-flags"><span class="flag fl-gray">No police union $</span><span class="flag fl-gray">No Trump ties</span></div>
+      </div>
+    </div>
+  </div>
+  <div class="candidate-row" id="gov-steyer" onclick="selectCandidate('gov','gov-steyer')">
+    <div class="bubble"></div>
+    <div class="cand-content">
+      <div class="cand-name-row"><span class="cand-name">Tom Steyer</span><span class="party-badge pb-dem">D</span><span class="color-tag ct-amber">⚠ SPLIT RISK</span><span class="tg-grade tg-yellow">🟡</span></div>
+      <div class="cand-bg">Hedge fund billionaire turned climate investor/activist. Self-funded. No prior elected office.</div>
+      <div class="cand-logic">Anti-Trump credentials are fine. But at 14.6%, staying in the race is the single greatest structural threat to Democratic top-two placement. Vague on fiscal transparency and homelessness specifics. No open-ledger plan.</div>
+      <div class="cand-flags"><span class="flag fl-amber">Vote-split risk</span><span class="flag fl-gray">Self-funded $</span></div>
+    </div>
+  </div>
+  <div class="candidate-row" id="gov-porter" onclick="selectCandidate('gov','gov-porter')">
+    <div class="bubble"></div>
+    <div class="cand-content">
+      <div class="cand-name-row"><span class="cand-name">Katie Porter</span><span class="party-badge pb-dem">D</span><span class="color-tag ct-amber">⚠ SPLIT RISK</span><span class="tg-grade tg-yellow">🟡</span></div>
+      <div class="cand-bg">Fmr. U.S. Rep (CA-47). Law professor. Consumer protection background.</div>
+      <div class="cand-logic">9.3% — too low to break top-two at current pace. Strong anti-Trump and transparency record but voting for her is mathematically advantaging Republicans at this spread.</div>
+      <div class="cand-flags"><span class="flag fl-amber">Vote-split risk</span></div>
+    </div>
+  </div>
+  <div class="candidate-row" id="gov-hilton" onclick="selectCandidate('gov','gov-hilton')">
+    <div class="bubble"></div>
+    <div class="cand-content">
+      <div class="cand-name-row"><span class="cand-name">Steve Hilton</span><span class="party-badge pb-rep">R</span><span class="color-tag ct-avoid">✗ AVOID</span><span class="tg-grade tg-red-grade">🔴</span></div>
+      <div class="cand-bg">Fmr. Fox News host. UK PM advisor. Republican. Trump-endorsed.</div>
+      <div class="cand-details">
+        <div class="cand-logic">Does NOT clear social-liberal threshold. Campaigns to "move California toward life" (restrict abortion via Family First Agenda). Wants to eliminate ALL sanctuary policies. Touts personal Trump relationship as a campaign asset. Anti-immigrant enforcement partner to federal ICE. Fiscal critique of CA is valid but the social positions and Trump alignment are hard disqualifiers.</div>
+        <div class="cand-flags">
+          <span class="flag fl-red">Trump endorsed</span>
+          <span class="flag fl-red">Anti-abortion agenda</span>
+          <span class="flag fl-red">Anti-sanctuary / pro-ICE enforcement</span>
+          <span class="flag fl-red">Social: DISQUALIFIED</span>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="candidate-row" id="gov-bianco" onclick="selectCandidate('gov','gov-bianco')">
+    <div class="bubble"></div>
+    <div class="cand-content">
+      <div class="cand-name-row"><span class="cand-name">Chad Bianco</span><span class="party-badge pb-rep">R</span><span class="color-tag ct-avoid">✗ AVOID</span><span class="tg-grade tg-red-grade">🔴</span></div>
+      <div class="cand-bg">Riverside County Sheriff. Republican.</div>
+      <div class="cand-logic">Does NOT clear social-liberal threshold. Oath Keepers ties. Anti-sanctuary law. Multiple jail death lawsuits. Wants to overturn CA environmental regs. Fiscally aligned on cutting spending but socially and ethically disqualified.</div>
+      <div class="cand-flags"><span class="flag fl-red">Oath Keepers ties</span><span class="flag fl-red">Anti-sanctuary</span><span class="flag fl-red">Jail death lawsuits</span><span class="flag fl-red">Social: DISQUALIFIED</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- LT GOVERNOR -->
+<div class="race-block">
+  <div class="race-title-row"><div class="race-title">LT. GOVERNOR</div><span class="race-badge rb-partisan">Top-Two Primary</span></div>
+  <div class="candidate-row" id="ltgov-tubbs" onclick="selectCandidate('ltgov','ltgov-tubbs')">
+    <div class="bubble"></div>
+    <div class="cand-content">
+      <div class="cand-name-row"><span class="cand-name">Michael Tubbs</span><span class="party-badge pb-dem">D</span><span class="color-tag ct-pick">✓ PICK</span><span class="tg-grade tg-green">🟢</span></div>
+      <div class="cand-bg">Fmr. Mayor of Stockton. Anti-poverty nonprofit founder. Public life origin.</div>
+      <div class="cand-details">
+        <div class="cand-logic">Non-politician origin. Ran Stockton's guaranteed income pilot — documented measurable outcomes (not vague "programs"). Concrete plans over rhetoric. No Trump connection. Aligns with non-status-quo homelessness approach.</div>
+        <div class="endorse-row"><strong>Endorsements:</strong> Progressive orgs, anti-poverty advocates</div>
+      </div>
+    </div>
+  </div>
+  <div class="candidate-row" id="ltgov-fryday" onclick="selectCandidate('ltgov','ltgov-fryday')">
+    <div class="bubble"></div>
+    <div class="cand-content">
+      <div class="cand-name-row"><span class="cand-name">Josh Fryday</span><span class="party-badge pb-dem">D</span><span class="tg-grade tg-yellow">🟡</span></div>
+      <div class="cand-bg">Newsom Cabinet Member (Chief Service Officer). Political appointment background.</div>
+      <div class="cand-logic">Establishment pick, strong Newsom ties. Lacks independent reform track record vs. Tubbs. Vague on fiscal transparency.</div>
+    </div>
+  </div>
+  <div class="candidate-row" id="ltgov-ma" onclick="selectCandidate('ltgov','ltgov-ma')">
+    <div class="bubble"></div>
+    <div class="cand-content">
+      <div class="cand-name-row"><span class="cand-name">Fiona Ma</span><span class="party-badge pb-dem">D</span><span class="tg-grade tg-yellow">🟡</span></div>
+      <div class="cand-bg">Incumbent State Treasurer / CPA. Career politician running for a different office.</div>
+      <div class="cand-logic">Jumps from Treasurer to LT Gov — opportunistic career political shift. No non-status-quo approach to homelessness or open-ledger innovation.</div>
+      <div class="cand-flags"><span class="flag fl-amber">Career political shift</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- SECRETARY OF STATE -->
+<div class="race-block">
+  <div class="race-title-row"><div class="race-title">SECRETARY OF STATE</div><span class="race-badge rb-partisan">Top-Two Primary</span></div>
+  <div class="candidate-row" id="sos-weber" onclick="selectCandidate('sos','sos-weber')">
+    <div class="bubble"></div>
+    <div class="cand-content">
+      <div class="cand-name-row"><span class="cand-name">Dr. Shirley N. Weber</span><span class="party-badge pb-dem">D</span><span class="color-tag ct-pick">✓ PICK</span><span class="tg-grade tg-green">🟢</span></div>
+      <div class="cand-bg">Incumbent SoS. Fmr. Assemblymember. SDSU professor/educator. Ph.D.</div>
+      <div class="cand-details">
+        <div class="cand-logic">Educator-turned-public-servant — non-career-politician origin. Unimpeachable voting rights and elections integrity record. Has defended CA election systems against federal pressure from Trump admin. Consensus pick across virtually every coalition.</div>
+        <div class="endorse-row"><strong>Endorsements:</strong> CA Young Democrats, CA Democratic Party, virtually all progressive clubs</div>
+      </div>
+    </div>
+  </div>
+  <div class="candidate-row" id="sos-wagner" onclick="selectCandidate('sos','sos-wagner')">
+    <div class="bubble"></div>
+    <div class="cand-content">
+      <div class="cand-name-row"><span class="cand-name">Don Wagner</span><span class="party-badge pb-rep">R</span><span class="color-tag ct-avoid">✗ AVOID</span></div>
+      <div class="cand-bg">Orange County Supervisor. Republican. Career politician.</div>
+      <div class="cand-logic">Does not clear social-liberal threshold. Republican with anti-voting-expansion history. No competitive viability check needed — Weber is the obvious pick.</div>
+      <div class="cand-flags"><span class="flag fl-red">Republican — no social-liberal history</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- CONTROLLER -->
+<div class="race-block">
+  <div class="race-title-row"><div class="race-title">STATE CONTROLLER</div><span class="race-badge rb-partisan">Top-Two Primary</span></div>
+  <div class="candidate-row" id="ctrl-cohen" onclick="selectCandidate('ctrl','ctrl-cohen')">
+    <div class="bubble"></div>
+    <div class="cand-content">
+      <div class="cand-name-row"><span class="cand-name">Malia M. Cohen</span><span class="party-badge pb-dem">D</span><span class="color-tag ct-pick">✓ PICK</span><span class="tg-grade tg-yellow">🟡</span></div>
+      <div class="cand-bg">Incumbent Controller. Fmr. SF Supervisor, BOE Member. CPA.</div>
+      <div class="cand-details">
+        <div class="cand-logic">Has issued audits exposing state waste and spending irregularities. CPA background — technical credential in fiscal oversight. No Republican challenger clears social-liberal bar. Cohen holds the record and the office.</div>
+        <div class="endorse-row"><strong>Endorsements:</strong> CA Democratic Party, labor coalitions</div>
+      </div>
+    </div>
+  </div>
+  <div class="candidate-row" id="ctrl-morgan" onclick="selectCandidate('ctrl','ctrl-morgan')">
+    <div class="bubble"></div>
+    <div class="cand-content">
+      <div class="cand-name-row"><span class="cand-name">Herb W. Morgan</span><span class="party-badge pb-rep">R</span><span class="color-tag ct-avoid">✗ AVOID</span></div>
+      <div class="cand-bg">Chief Investment Officer. Republican.</div>
+      <div class="cand-logic">Not competitive enough to surface as a social-liberal-fiscal-conservative exception. Republican with no documented social-liberal positions.</div>
+      <div class="cand-flags"><span class="flag fl-red">Republican — no social-liberal history on record</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- TREASURER -->
+<div class="race-block">
+  <div class="race-title-row"><div class="race-title">STATE TREASURER</div><span class="race-badge rb-partisan">Top-Two Primary</span></div>
+  <div class="candidate-row" id="treas-kounalakis" onclick="selectCandidate('treas','treas-kounalakis')">
+    <div class="bubble"></div>
+    <div class="cand-content">
+      <div class="cand-name-row"><span class="cand-name">Eleni Kounalakis</span><span class="party-badge pb-dem">D</span><span class="color-tag ct-pick">✓ PICK</span><span class="tg-grade tg-yellow">🟡</span></div>
+      <div class="cand-bg">Lt. Governor. Fmr. U.S. Ambassador to Hungary. Real estate development business background before politics.</div>
+      <div class="cand-details">
+        <div class="cand-logic">Business/diplomatic background before elected office. Strong anti-Trump public record. Broader progressive endorsement than Caballero. Fiscal oversight credibility from LT Gov budget role.</div>
+        <div class="endorse-row"><strong>Endorsements:</strong> CA Democratic clubs, labor, progressive coalitions</div>
+      </div>
+    </div>
+  </div>
+  <div class="candidate-row" id="treas-caballero" onclick="selectCandidate('treas','treas-caballero')">
+    <div class="bubble"></div>
+    <div class="cand-content">
+      <div class="cand-name-row"><span class="cand-name">Anna Caballero</span><span class="party-badge pb-dem">D</span><span class="tg-grade tg-yellow">🟡</span></div>
+      <div class="cand-bg">CA State Senator. Career politician (Assembly + Senate).</div>
+      <div class="cand-logic">Career political path. Some coalitions endorse. Lower score on public-life-over-political-tenure vs. Kounalakis.</div>
+      <div class="cand-flags"><span class="flag fl-gray">Career politician</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- AG -->
+<div class="race-block">
+  <div class="race-title-row"><div class="race-title">ATTORNEY GENERAL</div><span class="race-badge rb-partisan">Top-Two Primary</span></div>
+  <div class="candidate-row" id="ag-bonta" onclick="selectCandidate('ag','ag-bonta')">
+    <div class="bubble"></div>
+    <div class="cand-content">
+      <div class="cand-name-row"><span class="cand-name">Rob Bonta</span><span class="party-badge pb-dem">D</span><span class="color-tag ct-pick">✓ PICK</span><span class="tg-grade tg-green">🟢</span></div>
+      <div class="cand-bg">Incumbent AG. Attorney background. Fmr. Assemblymember.</div>
+      <div class="cand-details">
+        <div class="cand-logic">50+ lawsuits against Trump administration overreach. Leads anti-ICE legal challenge infrastructure. Most publicly active state AG in the country against Trump's DOJ abuses. Near-universal progressive endorsement.</div>
+        <div class="endorse-row"><strong>Endorsements:</strong> CA Democratic Party, Courage California, all major progressive coalitions</div>
+      </div>
+    </div>
+  </div>
+  <div class="candidate-row" id="ag-gates" onclick="selectCandidate('ag','ag-gates')">
+    <div class="bubble"></div>
+    <div class="cand-content">
+      <div class="cand-name-row"><span class="cand-name">Michael E. Gates</span><span class="party-badge pb-rep">R</span><span class="color-tag ct-avoid">✗ AVOID</span></div>
+      <div class="cand-bg">Deputy U.S. Attorney. Republican.</div>
+      <div class="cand-logic">Federal prosecutor in Trump-era DOJ. Does not meet social-liberal threshold. Not competitive enough to surface as a viable exception.</div>
+      <div class="cand-flags"><span class="flag fl-red">Republican — Trump-era DOJ background</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- INSURANCE COMMISSIONER -->
+<div class="race-block">
+  <div class="race-title-row"><div class="race-title">INSURANCE COMMISSIONER</div><span class="race-badge rb-partisan">Top-Two Primary</span></div>
+  <div class="candidate-row" id="ins-kim" onclick="selectCandidate('ins','ins-kim')">
+    <div class="bubble"></div>
+    <div class="cand-content">
+      <div class="cand-name-row"><span class="cand-name">Jane Kim</span><span class="party-badge pb-dem">D</span><span class="color-tag ct-pick">✓ PICK</span><span class="tg-grade tg-green">🟢</span></div>
+      <div class="cand-bg">Attorney, consumer advocate. Fmr. SF Supervisor. Non-politician origin (law/community).</div>
+      <div class="cand-details">
+        <div class="cand-logic">Most specific reform plan in the field: open rate-review dashboards, homeowners' insurance transparency after Palisades Fire crisis. Consumer Attorney first, politician second. Endorsed by Courage California.</div>
+        <div class="cand-film"><strong>Film/TV:</strong> Supports affordable business insurance framework to retain production economy.</div>
+        <div class="endorse-row"><strong>Endorsements:</strong> Courage California, progressive consumer groups, CA Dem clubs</div>
+      </div>
+    </div>
+  </div>
+  <div class="candidate-row" id="ins-allen" onclick="selectCandidate('ins','ins-allen')">
+    <div class="bubble"></div>
+    <div class="cand-content">
+      <div class="cand-name-row"><span class="cand-name">Ben Allen</span><span class="party-badge pb-dem">D</span><span class="tg-grade tg-yellow">🟡</span></div>
+      <div class="cand-bg">CA State Senator. Career politician.</div>
+      <div class="cand-logic">Endorsed by some coalitions. Career legislative path. Less specific on open-ledger consumer tools than Kim.</div>
+      <div class="cand-flags"><span class="flag fl-gray">Career politician</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- SUPT PUBLIC INSTRUCTION -->
+<div class="race-block">
+  <div class="race-title-row"><div class="race-title">SUPT. OF PUBLIC INSTRUCTION</div><span class="race-badge rb-nonpartisan">Nonpartisan</span></div>
+  <div class="candidate-row" id="spi-rendon" onclick="selectCandidate('spi','spi-rendon')">
+    <div class="bubble"></div>
+    <div class="cand-content">
+      <div class="cand-name-row"><span class="cand-name">Anthony Rendon</span><span class="party-badge pb-np">NP</span><span class="color-tag ct-pick">✓ PICK</span><span class="tg-grade tg-green">🟢</span></div>
+      <div class="cand-bg">Fmr. CA Assembly Speaker. College instructor background. Democracy advocate.</div>
+      <div class="cand-details">
+        <div class="cand-logic">Educator origin before political office. Legislative experience provides budget oversight capacity. Supported CA Film Tax Credit expansion and media arts curricula. Multiple CA Democratic club endorsements. Strongest on education funding accountability.</div>
+        <div class="cand-film"><strong>Film/TV:</strong> Backed CA Film Tax Credit and media arts in public schools.</div>
+        <div class="endorse-row"><strong>Endorsements:</strong> Multiple CA Democratic clubs, teacher organizations</div>
+      </div>
+    </div>
+  </div>
+  <div class="candidate-row" id="spi-barrera" onclick="selectCandidate('spi','spi-barrera')">
+    <div class="bubble"></div>
+    <div class="cand-content">
+      <div class="cand-name-row"><span class="cand-name">Richard Barrera</span><span class="party-badge pb-np">NP</span><span class="tg-grade tg-yellow">🟡</span></div>
+      <div class="cand-bg">State Superintendent Advisor. SDUSD Board Member. Labor/education background.</div>
+      <div class="cand-logic">Endorsed by Courage California and UTLA. Strong labor backing. Less specific on fiscal transparency in education spending vs. Rendon.</div>
+    </div>
+  </div>
+  <div class="candidate-row" id="spi-shaw" onclick="selectCandidate('spi','spi-shaw')">
+    <div class="bubble"></div>
+    <div class="cand-content">
+      <div class="cand-name-row"><span class="cand-name">Sonja Shaw</span><span class="party-badge pb-np">NP</span><span class="color-tag ct-avoid">✗ AVOID</span></div>
+      <div class="cand-bg">School District President. CRA-endorsed Republican in nonpartisan race.</div>
+      <div class="cand-flags"><span class="flag fl-red">CRA (Republican) endorsed</span><span class="flag fl-red">Anti-public school track record</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- STATE LEGISLATURE -->
+<div class="section-head"><span class="sh-num">02</span> STATE LEGISLATURE</div>
+
+<div class="race-block">
+  <div class="race-title-row"><div class="race-title">STATE SENATE · DISTRICT 28</div><span class="race-badge rb-partisan">Top-Two Primary</span></div>
+  <div class="candidate-row" id="sd28-smallwood" onclick="selectCandidate('sd28','sd28-smallwood')">
+    <div class="bubble"></div>
+    <div class="cand-content">
+      <div class="cand-name-row"><span class="cand-name">Lola Smallwood-Cuevas</span><span class="party-badge pb-dem">D</span><span class="color-tag ct-pick">✓ PICK</span><span class="tg-grade tg-yellow">🟡</span></div>
+      <div class="cand-bg">Incumbent SD-28. Fmr. UCLA Labor Center director. Labor organizer background — non-politician origin.</div>
+      <div class="cand-details">
+        <div class="cand-logic">Your senator. Labor/workers' rights background outside political establishment. Declared local emergency on ICE immigration raids. District covers Palms/Cheviot Hills/Mid-City/Mar Vista. Strong IATSE/SAG-AFTRA labor ties — directly relevant to film/TV production.</div>
+        <div class="cand-film"><strong>Film/TV:</strong> IATSE and SAG-AFTRA allied. Supports CA Film Credit expansion and production workers' rights.</div>
+        <div class="endorse-row"><strong>Endorsements:</strong> Labor unions, progressive Dem clubs, environmental groups</div>
+      </div>
+    </div>
+  </div>
+  <div class="uncontested-banner">Verify challenger list at lavote.gov. No major challenger has emerged.</div>
+</div>
+
+<div class="race-block">
+  <div class="race-title-row"><div class="race-title">STATE ASSEMBLY · DISTRICT 55</div><span class="race-badge rb-partisan">Top-Two Primary</span></div>
+  <div class="candidate-row" id="ad55-bryan" onclick="selectCandidate('ad55','ad55-bryan')">
+    <div class="bubble"></div>
+    <div class="cand-content">
+      <div class="cand-name-row"><span class="cand-name">Isaac Bryan</span><span class="party-badge pb-dem">D</span><span class="color-tag ct-pick">✓ PICK</span><span class="tg-grade tg-green">🟢</span></div>
+      <div class="cand-bg">Incumbent AD-55 (Culver City/Palms/West Adams). UCLA Black Policy Project founder. Policy researcher background. Age 34.</div>
+      <div class="cand-details">
+        <div class="cand-logic">Your assemblymember. Policy research/academic origin — not a career politician. Palms is in his district. Endorsed by EnviroVoters, Housing Action Coalition, CA Young Democrats, UTLA, NNU. Grassroots-funded. Authored fiscal transparency legislation for public spending. Anti-Trump/ICE enforcement on record.</div>
+        <div class="cand-film"><strong>Film/TV:</strong> Represents Culver City (Sony Pictures/Amazon MGM corridor). Has advocated for expanded CA Film &amp; TV Tax Credit to retain productions in district.</div>
+        <div class="endorse-row"><strong>Endorsements:</strong> EnviroVoters, Housing Action Coalition, CA Young Democrats, UTLA, National Nurses United</div>
+        <div class="cand-flags"><span class="flag fl-gray">No police union $</span><span class="flag fl-gray">No misconduct</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- LA COUNTY -->
+<div class="section-head"><span class="sh-num">03</span> LOS ANGELES COUNTY</div>
+
+<div class="race-block">
+  <div class="race-title-row"><div class="race-title">COUNTY SUPERVISOR · DISTRICT 3</div><span class="race-badge rb-nonpartisan">Nonpartisan</span></div>
+  <div class="candidate-row" id="sup3-horvath" onclick="selectCandidate('sup3','sup3-horvath')">
+    <div class="bubble"></div>
+    <div class="cand-content">
+      <div class="cand-name-row"><span class="cand-name">Lindsey Horvath</span><span class="color-tag ct-pick">✓ PICK</span><span class="tg-grade tg-green">🟢</span></div>
+      <div class="cand-bg">Incumbent Supervisor BD-3. Fmr. West Hollywood City Councilmember. Activist/community organizer origin.</div>
+      <div class="cand-details">
+        <div class="cand-logic">Spearheaded Measure G — county governance reform (expanded board, independent ethics commission, elected County Executive). Investigated LAHSA mismanagement. Declared ICE emergency. Delivered $55M for Palisades Fire victims. Moved $300M+ to create a dedicated homelessness agency. No challenger has mounted a credible fundraising campaign. No county supervisor has lost reelection since 1980.</div>
+        <div class="endorse-row"><strong>Endorsements:</strong> LA Forward, LA County Dem Party</div>
+      </div>
+    </div>
+  </div>
+  <div class="candidate-row" id="sup3-arey" onclick="selectCandidate('sup3','sup3-arey')">
+    <div class="bubble"></div>
+    <div class="cand-content">
+      <div class="cand-name-row"><span class="cand-name">Tonia Arey</span><span class="color-tag ct-avoid">✗ AVOID</span></div>
+      <div class="cand-bg">Real estate agent. First-time candidate. Police-union aligned donors.</div>
+      <div class="cand-flags"><span class="flag fl-red">Police union aligned</span><span class="flag fl-gray">First-time, no policy depth</span></div>
+    </div>
+  </div>
+</div>
+
+<div class="race-block">
+  <div class="race-title-row"><div class="race-title">COUNTY SHERIFF</div><span class="race-badge rb-nonpartisan">Can Win Outright at 50%+1</span></div>
+  <div class="candidate-row" id="shr-strong" onclick="selectCandidate('shr','shr-strong')">
+    <div class="bubble"></div>
+    <div class="cand-content">
+      <div class="cand-name-row"><span class="cand-name">Eric Strong</span><span class="color-tag ct-pick">✓ PICK</span><span class="tg-grade tg-green">🟢</span></div>
+      <div class="cand-bg">Retired LASD Division Chief. Fmr. Probation Campus Safety Chief. 30+ yr career.</div>
+      <div class="cand-details">
+        <div class="cand-logic">Calls for full cooperation with Inspector General and Civilian Oversight Committee. Non-status-quo on deputy gangs and jail reform. $1.2M raised — grassroots, non-corporate. Stevie Wonder endorsed (renewed 2026). Strategy: get Strong into November to prevent a Villanueva runoff. Luna is an acceptable backup but Strong is the reform-first pick.</div>
+        <div class="endorse-row"><strong>Endorsements:</strong> Stevie Wonder, grassroots progressive coalitions, La Defensa</div>
+        <div class="cand-flags"><span class="flag fl-gray">No deputy gang ties</span><span class="flag fl-gray">Oversight-friendly</span></div>
+      </div>
+    </div>
+  </div>
+  <div class="candidate-row" id="shr-luna" onclick="selectCandidate('shr','shr-luna')">
+    <div class="bubble"></div>
+    <div class="cand-content">
+      <div class="cand-name-row"><span class="cand-name">Robert Luna</span><span class="tg-grade tg-yellow">🟡</span></div>
+      <div class="cand-bg">Incumbent Sheriff. Fmr. Long Beach Police Chief. Elected 2022.</div>
+      <div class="cand-logic">Homicides down 25%, use of force down 25% since 2023. LA County Dem Party endorsed. Has clashed with civilian oversight — unresolved. Acceptable backup if Strong doesn't break through.</div>
+      <div class="endorse-row"><strong>Endorsements:</strong> LA County Dem Party, LA County Fed of Labor</div>
+      <div class="cand-flags"><span class="flag fl-amber">Civilian oversight tension</span></div>
+    </div>
+  </div>
+  <div class="candidate-row" id="shr-villanueva" onclick="selectCandidate('shr','shr-villanueva')">
+    <div class="bubble"></div>
+    <div class="cand-content">
+      <div class="cand-name-row"><span class="cand-name">Alex Villanueva</span><span class="color-tag ct-avoid">✗ AVOID</span><span class="tg-grade tg-red-grade">🔴</span></div>
+      <div class="cand-bg">Fmr. Sheriff (2018-2022). Switched to Republican 2025.</div>
+      <div class="cand-flags"><span class="flag fl-red">Switched to Republican 2025</span><span class="flag fl-red">Obstructed FBI investigation</span><span class="flag fl-red">Fought civilian oversight</span><span class="flag fl-amber">Promoted deputies with misconduct records</span></div>
+    </div>
+  </div>
+</div>
+
+<div class="race-block">
+  <div class="race-title-row"><div class="race-title">COUNTY ASSESSOR</div><span class="race-badge rb-nonpartisan">Nonpartisan</span></div>
+  <div class="candidate-row" id="assr-prang" onclick="selectCandidate('assr','assr-prang')">
+    <div class="bubble"></div>
+    <div class="cand-content">
+      <div class="cand-name-row"><span class="cand-name">Jeffrey Prang</span><span class="color-tag ct-amber">⚠ CAUTIOUS PICK</span><span class="tg-grade tg-yellow">🟡</span></div>
+      <div class="cand-bg">Incumbent Assessor since 2014. Fmr. West Hollywood Council. Real estate background.</div>
+      <div class="cand-details">
+        <div class="cand-logic">$130M tech modernization of office (digitized records, fire reassessment system). Endorsed by 4 of 5 supervisors. HOWEVER: office found civilly liable in March 2026 for providing tax breaks to connected insiders — serious ethics concern. Best available option among confirmed candidates; Adamus (challenger) has whistleblower credibility but near-zero fundraising and no institutional capacity for a $2T property roll.</div>
+        <div class="cand-flags"><span class="flag fl-amber">Office civil liability — Mar 2026</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- CITY OF LA -->
+<div class="section-head"><span class="sh-num">04</span> CITY OF LOS ANGELES</div>
+
+<div class="race-block">
+  <div class="race-title-row"><div class="race-title">MAYOR OF LOS ANGELES</div><span class="race-badge rb-nonpartisan">Top-Two Primary</span></div>
+  <div class="candidate-row" id="may-miller" onclick="selectCandidate('may','may-miller')">
+    <div class="bubble"></div>
+    <div class="cand-content">
+      <div class="cand-name-row"><span class="cand-name">Adam Miller</span><span class="color-tag ct-pick">✓ PICK</span><span class="tg-grade tg-green">🟢</span></div>
+      <div class="cand-bg">Tech entrepreneur. Co-founder Cornerstone OnDemand (SaaS/education tech). Co-founder Better Angels nonprofit (homelessness prevention). Age 56.</div>
+      <div class="cand-details">
+        <div class="cand-logic">Pure non-politician origin — built companies then pivoted to anti-homelessness work. Proposes specific city spending transparency dashboards and financial accountability portals. Micro-loan eviction prevention model with documented outcomes. No political patronage. Calls LA's entertainment industry "our biggest economic asset." Operationally competent for LA28 Olympics. Polling single digits — strategic consideration: if Bass is the realistic top-two Dem, voting Miller still sends the strongest reform signal in the primary.</div>
+        <div class="cand-film"><strong>Film/TV:</strong> Specific plan: streamline City permitting for productions and expand CA Film Tax Credit. Names entertainment industry explicitly in economic platform.</div>
+        <div class="endorse-row"><strong>Endorsements:</strong> Tech/business community, civic reform advocates</div>
+        <div class="cand-flags"><span class="flag fl-gray">No political machine</span><span class="flag fl-gray">No police union $</span></div>
+      </div>
+    </div>
+  </div>
+  <div class="candidate-row" id="may-bass" onclick="selectCandidate('may','may-bass')">
+    <div class="bubble"></div>
+    <div class="cand-content">
+      <div class="cand-name-row"><span class="cand-name">Karen Bass</span><span class="color-tag ct-amber">⚠ PRAGMATIC BACKUP</span><span class="tg-grade tg-yellow">🟡</span></div>
+      <div class="cand-bg">Incumbent Mayor. Fmr. U.S. Congresswoman, CA Assembly Speaker. Career politician.</div>
+      <div class="cand-details">
+        <div class="cand-logic">57% unfavorability. Was in Cuba when Palisades fires broke out — politically disqualifying image. Homelessness: "Inside Safe" moved people into hotels, not permanent housing. However: IATSE endorsed, strong Trump/ICE opposition, LA28 infrastructure already in motion. If you want a Democrat to be one of the two November candidates, Bass has the institutional machinery to do it. Bass vs. Pratt in November (Raman or Miller can't break through) is the most likely scenario — and Bass wins that.</div>
+        <div class="cand-flags"><span class="flag fl-amber">Cuba trip during fires</span><span class="flag fl-amber">57% unfavorability</span></div>
+      </div>
+    </div>
+  </div>
+  <div class="candidate-row" id="may-raman" onclick="selectCandidate('may','may-raman')">
+    <div class="bubble"></div>
+    <div class="cand-content">
+      <div class="cand-name-row"><span class="cand-name">Nithya Raman</span><span class="tg-grade tg-yellow">🟡</span></div>
+      <div class="cand-bg">CD-4 Councilmember. DSA-endorsed. Data scientist background. Polling ~17%.</div>
+      <div class="cand-logic">Data scientist origin is compelling. Strong creative-community donor base. BUT: opposed homeless encampment clearing, opposed SB 79 transit housing, DSA/defund-adjacent policing positions create public safety tension heading into LA28. Slipped in polls since primary debate. At 17% she could break through but the defund/anti-enforcement record is a concern given crime priorities.</div>
+      <div class="cand-flags"><span class="flag fl-amber">DSA / defund-adjacent</span><span class="flag fl-amber">Opposed SB 79 housing</span></div>
+    </div>
+  </div>
+  <div class="candidate-row" id="may-pratt" onclick="selectCandidate('may','may-pratt')">
+    <div class="bubble"></div>
+    <div class="cand-content">
+      <div class="cand-name-row"><span class="cand-name">Spencer Pratt</span><span class="color-tag ct-avoid">✗ AVOID</span></div>
+      <div class="cand-bg">Reality TV personality. Republican. Palisades Fire victim. Polling 10-14%.</div>
+      <div class="cand-logic">Endorsed by Steve Hilton and Richard Grenell (Trump ally). Republican. Zero governance capacity. LA28 with a reality TV mayor is a global reputational catastrophe. Backed by same network as Hilton.</div>
+      <div class="cand-flags"><span class="flag fl-red">Republican</span><span class="flag fl-red">Hilton + Grenell (Trump) backed</span><span class="flag fl-red">Zero governance experience</span></div>
+    </div>
+  </div>
+</div>
+
+<div class="race-block">
+  <div class="race-title-row"><div class="race-title">CITY ATTORNEY</div><span class="race-badge rb-nonpartisan">Top-Two Primary</span></div>
+  <div class="candidate-row" id="ca-soto" onclick="selectCandidate('ca','ca-soto')">
+    <div class="bubble"></div>
+    <div class="cand-content">
+      <div class="cand-name-row"><span class="cand-name">Hydee Feldstein Soto</span><span class="color-tag ct-pick">✓ PICK</span><span class="tg-grade tg-yellow">🟡</span></div>
+      <div class="cand-bg">Incumbent City Attorney. Private practice attorney background. First elected 2022.</div>
+      <div class="cand-details">
+        <div class="cand-logic">Private practice origin. Has filed legal challenges protecting immigrant communities from federal overreach. Increased prosecution of city contracting fraud. Best established anti-corruption legal infrastructure in the race.</div>
+        <div class="endorse-row"><strong>Endorsements:</strong> Broad civic coalition, progressive groups</div>
+      </div>
+    </div>
+  </div>
+  <div class="candidate-row" id="ca-mckinney" onclick="selectCandidate('ca','ca-mckinney')">
+    <div class="bubble"></div>
+    <div class="cand-content">
+      <div class="cand-name-row"><span class="cand-name">John McKinney</span><span class="color-tag ct-avoid">✗ AVOID</span></div>
+      <div class="cand-bg">Deputy District Attorney.</div>
+      <div class="cand-flags"><span class="flag fl-red">Police/DA-aligned donor base</span></div>
+    </div>
+  </div>
+  <div class="candidate-row" id="ca-roy" onclick="selectCandidate('ca','ca-roy')">
+    <div class="bubble"></div>
+    <div class="cand-content">
+      <div class="cand-name-row"><span class="cand-name">Marissa Roy</span><span class="tg-grade tg-yellow">🟡</span></div>
+      <div class="cand-bg">Deputy Attorney General. Human Rights Attorney background.</div>
+      <div class="cand-logic">Strong human rights credentials. Acceptable second choice but less established anti-federal-overreach infrastructure vs. Feldstein Soto.</div>
+    </div>
+  </div>
+</div>
+
+<div class="race-block">
+  <div class="race-title-row"><div class="race-title">CITY CONTROLLER</div><span class="race-badge rb-nonpartisan">Top-Two Primary</span></div>
+  <div class="candidate-row" id="cc-mejia" onclick="selectCandidate('cc','cc-mejia')">
+    <div class="bubble"></div>
+    <div class="cand-content">
+      <div class="cand-name-row"><span class="cand-name">Kenneth Mejia</span><span class="color-tag ct-pick">✓ PICK ★ TOP BALLOT PICK</span><span class="tg-grade tg-green">🟢</span></div>
+      <div class="cand-bg">Incumbent City Controller. CPA / Public Accountant. Age ~30s. Non-career-politician origin. First elected 2022.</div>
+      <div class="cand-details">
+        <div class="cand-logic">Single highest-scoring candidate on the entire ballot for Fiscal Responsibility / Radical Transparency. Viral open-data dashboards exposing city spending waste. Audits of homelessness funding mismanagement and payroll irregularities. CPA background — this is his profession, not a career ladder rung. No political patronage. Endorsed by LA County Fed of Labor, UAW, UTLA, Eunisses Hernandez. The most concrete "open-ledger" track record of anyone on this ballot.</div>
+        <div class="cand-film"><strong>Film/TV:</strong> Has audited entertainment-related city contracts. Transparency tools extend to all public vendor relationships.</div>
+        <div class="endorse-row"><strong>Endorsements:</strong> LA County Fed of Labor, UAW Region 6, UTLA, Eunisses Hernandez, progressive coalitions</div>
+        <div class="cand-flags"><span class="flag fl-gray">No misconduct</span><span class="flag fl-gray">Viral fiscal audits</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="race-block">
+  <div class="race-title-row"><div class="race-title">CITY COUNCIL · DISTRICT 5 (Palms / Cheviot Hills)</div><span class="race-badge rb-nonpartisan">Top-Two Primary</span></div>
+  <div class="candidate-row" id="cd5-oyler" onclick="selectCandidate('cd5','cd5-oyler')">
+    <div class="bubble"></div>
+    <div class="cand-content">
+      <div class="cand-name-row"><span class="cand-name">Morgan Oyler</span><span class="color-tag ct-pick">✓ PICK</span><span class="tg-grade tg-green">🟢</span></div>
+      <div class="cand-bg">Policy advocate / urban planning background. Non-politician challenger.</div>
+      <div class="cand-details">
+        <div class="cand-logic">Non-career-politician origin. Strongly pro-SB 79 (transit-oriented housing — the single biggest test in this race). Criticizes incumbent's NIMBY historic designation abuse that blocked affordable housing. Specific infrastructure and transit plans. No political patronage network. Accountability over incumbency.</div>
+      </div>
+    </div>
+  </div>
+  <div class="candidate-row" id="cd5-yaroslavsky" onclick="selectCandidate('cd5','cd5-yaroslavsky')">
+    <div class="bubble"></div>
+    <div class="cand-content">
+      <div class="cand-name-row"><span class="cand-name">Katy Yaroslavsky</span><span class="tg-grade tg-yellow">🟡</span></div>
+      <div class="cand-bg">Incumbent CD-5. Land-use attorney, Coro fellow. Zev Yaroslavsky family name.</div>
+      <div class="cand-logic">Moderate tenant protections are positives. But voted AGAINST SB 79 transit housing. Chief of staff called a 70-unit affordable building "egregious." Historic designation weaponized as NIMBY tool. Coalition builder whose coalition is blocking density.</div>
+      <div class="cand-flags"><span class="flag fl-amber">Voted against SB 79</span><span class="flag fl-amber">NIMBY-adjacent housing record</span><span class="flag fl-gray">Political dynasty connection</span></div>
+    </div>
+  </div>
+</div>
+
+<div class="race-block">
+  <div class="race-title-row"><div class="race-title">LAUSD BOARD · DISTRICT 4 (Westside)</div><span class="race-badge rb-nonpartisan">Top-Two Primary</span></div>
+  <div class="candidate-row" id="lausd4-patel" onclick="selectCandidate('lausd4','lausd4-patel')">
+    <div class="bubble"></div>
+    <div class="cand-content">
+      <div class="cand-name-row"><span class="cand-name">Ankur Patel</span><span class="color-tag ct-pick">✓ PICK</span><span class="tg-grade tg-green">🟢</span></div>
+      <div class="cand-bg">Challenger. Education policy / community advocacy background. Non-incumbent.</div>
+      <div class="cand-details">
+        <div class="cand-logic">Accountability challenger. Superintendent Carvalho under FBI investigation for failed chatbot project. LAUSD issued 657 layoffs and is at a budget "breaking point." Melvoin has served his political purpose and this is his final term anyway. Fresh accountability is the right call here.</div>
+      </div>
+    </div>
+  </div>
+  <div class="candidate-row" id="lausd4-melvoin" onclick="selectCandidate('lausd4','lausd4-melvoin')">
+    <div class="bubble"></div>
+    <div class="cand-content">
+      <div class="cand-name-row"><span class="cand-name">Nick Melvoin</span><span class="tg-grade tg-yellow">🟡</span></div>
+      <div class="cand-bg">Incumbent LAUSD Board D-4. Former teacher, nonprofit, JD. Final (3rd) term.</div>
+      <div class="cand-logic">Fmr. teacher origin is positive. Screen time limits are genuinely good policy. But chatbot scandal and FBI probe happened on his board's watch. Ran for Congress in 2024 — the board was not his priority.</div>
+      <div class="cand-flags"><span class="flag fl-amber">Carvalho FBI scandal on watch</span><span class="flag fl-amber">Failed chatbot — board oversight</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- MEASURES -->
+<div class="section-head"><span class="sh-num">05</span> BALLOT MEASURES</div>
+
+<!-- MEASURE ER -->
+<div class="race-block">
+  <div class="race-title-row">
+    <div class="race-title">MEASURE ER — LA COUNTY · Essential Services Restoration Act</div>
+    <span class="race-badge rb-measure">County Measure</span>
+  </div>
+  <div class="measure-content">
+    <div class="tax-alert">
+      <div class="tax-alert-icon">🚩</div>
+      <div class="tax-alert-text"><strong>YOU PAY THIS TAX.</strong> A direct consumer sales tax increase of 0.5% on your purchases. Every $100 you spend at checkout costs you an extra $0.50. LA County currently has the highest combined sales tax of any major metro in the nation (already 9.5% after Measure A passed April 2026 — another half cent). This would push some cities in the county above 10.25%. Groceries, prescriptions, and medical equipment are exempt.</div>
+    </div>
+    <div class="measure-q">Shall LA County increase sales tax 0.5% for 5 years to fund healthcare and social services?</div>
+    <div class="measure-detail">Raises ~$1B/year for 5 years (expires Oct 2031, cannot extend without re-vote). Direct response to Trump's "One Big Beautiful Bill" Medicaid cuts. 700,000+ county residents projected to lose Medi-Cal. 7 county public health clinics already closed in 2026 from $50M+ in lost funding. Includes independent oversight and public reporting requirement. Opposed by Howard Jarvis Taxpayers Association (which notes this is the second half-cent increase in under two years). Only supervisor to vote NO: Kathryn Barger. Current polls: 47% oppose, 45% support — too close to call.<br><br>
+    <strong style="color:var(--amber)">TENSION:</strong> This directly conflicts with your high-taxes concern. LA taxes ARE too high, and the city/county DO manage money poorly. The question is whether you believe Trump's healthcare cuts have created a genuine emergency that requires this specific response — or whether the county should cut spending elsewhere instead of asking you for more at checkout.<br><br>
+    <strong style="color:var(--pick)">RECOMMENDATION: YES — with eyes open.</strong> The 5-year sunset and independent oversight clause are meaningful guardrails. The alternative is clinic closures and ER overcrowding that affects you even with private insurance. But this is the one race where your fiscal instinct is 100% legitimate and a NO vote is a reasonable principled position.</div>
+    <div class="measure-vote-row">
+      <button class="mv-btn" id="er-yes" onclick="voteMeasure('er','yes')">YES</button>
+      <button class="mv-btn" id="er-no" onclick="voteMeasure('er','no')">NO</button>
+    </div>
+  </div>
+</div>
+
+<!-- MEASURE TC -->
+<div class="race-block">
+  <div class="race-title-row">
+    <div class="race-title">MEASURE TC — CITY OF LA · Hotel Tax Implementation Expansion</div>
+    <span class="race-badge rb-measure">City Measure</span>
+  </div>
+  <div class="measure-content">
+    <div class="measure-q">Shall the City expand the hotel/transient occupancy tax to cover short-term rental platforms?</div>
+    <div class="measure-detail">Closes a tax loophole — applies the existing hotel tax rate to Airbnb/VRBO-type platforms that currently avoid it. No new tax rate is created. No increase for regular residents. Who pays: short-term rental hosts and their guests (largely tourists/business travelers). Levels the playing field between traditional hotels and platform rentals.<br><br>
+    <strong style="color:var(--pick)">RECOMMENDATION: YES.</strong> This is tax equity, not a tax increase on you. Closes a loophole that lets platforms free-ride on city infrastructure while traditional hotels pay. No direct cost to you as a resident.</div>
+    <div class="measure-vote-row">
+      <button class="mv-btn" id="tc-yes" onclick="voteMeasure('tc','yes')">YES</button>
+      <button class="mv-btn" id="tc-no" onclick="voteMeasure('tc','no')">NO</button>
+    </div>
+  </div>
+</div>
+
+<!-- MEASURE TT -->
+<div class="race-block">
+  <div class="race-title-row">
+    <div class="race-title">MEASURE TT — CITY OF LA · Hotel Tax Rate Increase</div>
+    <span class="race-badge rb-measure">City Measure</span>
+  </div>
+  <div class="measure-content">
+    <div class="measure-q">Shall the City increase the hotel/transient occupancy tax rate?</div>
+    <div class="measure-detail">Increases the tax rate paid by hotel guests (tourists and business travelers) when booking a hotel room in LA. You pay this only if you're staying in a hotel in LA — which as a resident you rarely do. Revenue to city general fund — relevant to LA28 Olympic visitor infrastructure.<br><br>
+    <strong style="color:var(--pick)">RECOMMENDATION: YES.</strong> Visitor tax — burden falls on tourists and out-of-town business travelers, not residents. Revenue supports Olympic-era infrastructure (your priority #7). No direct cost increase to you as a 90034 resident.</div>
+    <div class="measure-vote-row">
+      <button class="mv-btn" id="tt-yes" onclick="voteMeasure('tt','yes')">YES</button>
+      <button class="mv-btn" id="tt-no" onclick="voteMeasure('tt','no')">NO</button>
+    </div>
+  </div>
+</div>
+
+<!-- JUDGES -->
+<div class="section-head"><span class="sh-num">06</span> LA COUNTY SUPERIOR COURT JUDGES</div>
+<div class="race-block">
+  <div class="race-title-row"><div class="race-title">SUPERIOR COURT — VOTING FRAMEWORK</div><span class="race-badge rb-judicial">LACBA Bar Ratings</span></div>
+  <div class="ovf">
+  <table class="judicial-table">
+    <thead><tr><th>Rating</th><th>Meaning</th><th>Action</th><th>Note</th></tr></thead>
+    <tbody>
+      <tr><td><span class="bar-pill bpEWQ">EWQ</span></td><td>Exceptionally Well Qualified</td><td><span class="color-tag ct-pick">PICK</span></td><td>Top LACBA rating. Always vote the highest-rated candidate in a contested race.</td></tr>
+      <tr><td><span class="bar-pill bpWQ">WQ</span></td><td>Well Qualified</td><td><span class="color-tag ct-blue">CONSIDER</span></td><td>Acceptable if no EWQ opponent in the race.</td></tr>
+      <tr><td><span class="bar-pill bpQ">Q</span></td><td>Qualified</td><td><span class="color-tag ct-amber">CAUTION</span></td><td>Only if no WQ or EWQ opponent. Check for misconduct history first.</td></tr>
+      <tr><td><span class="bar-pill bpNQ">NQ</span></td><td>Not Qualified</td><td><span class="color-tag ct-avoid">NEVER</span></td><td>Do not vote NQ regardless of who they're running against. Leave blank if both candidates are NQ.</td></tr>
+      <tr><td><span class="bar-pill bpUn">Uncontested</span></td><td>No challenger</td><td><span class="color-tag ct-gray">Leave Blank</span></td><td>No strategic reason to vote. Exception: known misconduct — leave blank as a protest.</td></tr>
+      <tr><td colspan="4" style="font-size:11px;color:var(--muted);font-style:italic">Final 2026 LACBA ratings: lacba.org · Full judicial slate for your address: lavote.gov · Commission on Judicial Performance public censures: cjp.ca.gov — any censured candidate = AVOID regardless of bar rating.</td></tr>
+    </tbody>
+  </table>
+  </div>
+</div>
+
+<!-- CHEAT SHEET -->
+<div class="section-head"><span class="sh-num">07</span> CHEAT SHEET — EVERY PICK AT A GLANCE</div>
+</div>
+
+<div class="cheat-sheet">
+  <div class="cs-header">SAMPLE BALLOT · 90034 · JUNE 2, 2026 — MASTER PICK TABLE</div>
+  <div class="ovf">
+  <table class="cs-table">
+    <thead><tr><th>Race</th><th>Level</th><th>PICK</th><th>AVOID</th><th>Vote</th><th>Key Logic</th></tr></thead>
+    <tbody>
+      <tr><td class="cs-race">Governor</td><td>State</td><td class="cs-pick">Xavier Becerra (D)</td><td class="cs-avoid">Hilton (anti-abortion/pro-ICE/Trump), Bianco (Oath Keepers), Steyer/Porter (split risk)</td><td class="cs-yes">BECERRA</td><td>Only viable Dem for top-two; 67+ Trump lawsuits as AG; no Republicans clear social-liberal bar</td></tr>
+      <tr><td class="cs-race">Lt. Governor</td><td>State</td><td class="cs-pick">Michael Tubbs (D)</td><td class="cs-avoid">Ma (career pol shift)</td><td class="cs-yes">TUBBS</td><td>Non-politician; documented guaranteed income outcomes — not vague programs</td></tr>
+      <tr><td class="cs-race">Secretary of State</td><td>State</td><td class="cs-pick">Dr. Shirley Weber (D)</td><td class="cs-avoid">Wagner (R)</td><td class="cs-yes">WEBER</td><td>Educator-turned-SoS; voting rights champion; consensus pick</td></tr>
+      <tr><td class="cs-race">Controller</td><td>State</td><td class="cs-pick">Malia Cohen (D)</td><td class="cs-avoid">Morgan (R)</td><td class="cs-yes">COHEN</td><td>Incumbent auditor; spending transparency track record; CPA</td></tr>
+      <tr><td class="cs-race">Treasurer</td><td>State</td><td class="cs-pick">Eleni Kounalakis (D)</td><td class="cs-avoid">Caballero (career pol)</td><td class="cs-yes">KOUNALAKIS</td><td>Diplomat/business origin before politics; strong anti-Trump record</td></tr>
+      <tr><td class="cs-race">Attorney General</td><td>State</td><td class="cs-pick">Rob Bonta (D)</td><td class="cs-avoid">Gates (R, Trump-era DOJ)</td><td class="cs-yes">BONTA</td><td>50+ Trump lawsuits; anti-ICE legal infrastructure; unanimous progressive endorsement</td></tr>
+      <tr><td class="cs-race">Insurance Commissioner</td><td>State</td><td class="cs-pick">Jane Kim (D)</td><td class="cs-avoid">Republican field</td><td class="cs-yes">JANE KIM</td><td>Consumer attorney first; open rate-review dashboard plan; post-Palisades Fire reform</td></tr>
+      <tr><td class="cs-race">Supt. Public Instruction</td><td>State</td><td class="cs-pick">Anthony Rendon (NP)</td><td class="cs-avoid">Sonja Shaw (R-backed)</td><td class="cs-yes">RENDON</td><td>Fmr. Assembly Speaker + educator; film/media arts curricula support</td></tr>
+      <tr><td class="cs-race">State Senate SD-28</td><td>State</td><td class="cs-pick">Lola Smallwood-Cuevas (D)</td><td class="cs-avoid">Any Republican</td><td class="cs-yes">SMALLWOOD-CUEVAS</td><td>Your senator; labor/IATSE ties; ICE emergency declaration</td></tr>
+      <tr><td class="cs-race">State Assembly AD-55</td><td>State</td><td class="cs-pick">Isaac Bryan (D)</td><td class="cs-avoid">Any Republican</td><td class="cs-yes">ISAAC BRYAN</td><td>Your assemblymember; Sony/Culver City corridor; grassroots-funded; fiscal transparency legislation</td></tr>
+      <tr><td class="cs-race">County Supervisor BD-3</td><td>County</td><td class="cs-pick">Lindsey Horvath</td><td class="cs-avoid">Tonia Arey (police-aligned)</td><td class="cs-yes">HORVATH</td><td>Measure G governance reform; ICE emergency; LAHSA investigation; fire response $55M</td></tr>
+      <tr><td class="cs-race">County Sheriff</td><td>County</td><td class="cs-pick">Eric Strong</td><td class="cs-avoid">Villanueva (R, FBI obstruction)</td><td class="cs-yes">STRONG</td><td>Reform-first; grassroots $1.2M; oversight-friendly; prevents Villanueva November runoff</td></tr>
+      <tr><td class="cs-race">County Assessor</td><td>County</td><td class="cs-pick">Jeffrey Prang ⚠</td><td>N/A</td><td class="cs-yes">PRANG*</td><td>*Cautious pick — office civil liability concern; best available for fiscal modernization</td></tr>
+      <tr><td class="cs-race">Mayor of LA</td><td>City</td><td class="cs-pick">Adam Miller</td><td class="cs-avoid">Spencer Pratt (R, Trump-adjacent)</td><td class="cs-yes">MILLER</td><td>Tech entrepreneur; fiscal dashboards; homelessness outcomes; film/TV permitting plan; no political machine</td></tr>
+      <tr><td class="cs-race">City Attorney</td><td>City</td><td class="cs-pick">Hydee Feldstein Soto</td><td class="cs-avoid">McKinney (DA/police-aligned)</td><td class="cs-yes">FELDSTEIN SOTO</td><td>Private practice origin; anti-federal-overreach legal work; contracting fraud prosecutions</td></tr>
+      <tr><td class="cs-race">City Controller</td><td>City</td><td class="cs-pick">Kenneth Mejia ★</td><td>N/A</td><td class="cs-yes">MEJIA</td><td>★ TOP PICK ENTIRE BALLOT: CPA; viral open-data audits; spending dashboards; fiscal transparency in practice</td></tr>
+      <tr><td class="cs-race">City Council CD-5</td><td>City</td><td class="cs-pick">Morgan Oyler</td><td class="cs-avoid">Yaroslavsky (voted against SB 79)</td><td class="cs-yes">OYLER</td><td>Non-politician; pro-transit housing density; accountability over dynasty incumbency</td></tr>
+      <tr><td class="cs-race">LAUSD Board D-4</td><td>School</td><td class="cs-pick">Ankur Patel</td><td>N/A</td><td class="cs-yes">PATEL</td><td>Accountability challenger; superintendent FBI investigation on incumbent's watch</td></tr>
+      <tr>
+        <td class="cs-race">Measure ER (County)</td><td>County</td>
+        <td class="cs-pick">YES (lean)</td>
+        <td>—</td>
+        <td class="cs-yes">YES*</td>
+        <td><span class="cs-tax">🚩 YOU PAY: 0.5¢ per $1 at checkout. LA already highest sales tax metro in US. 5-yr sunset + independent oversight. *Principled NO is legitimate if you believe county should cut spending instead.</span></td>
+      </tr>
+      <tr>
+        <td class="cs-race">Measure TC (City)</td><td>City</td>
+        <td class="cs-pick">YES</td><td>—</td><td class="cs-yes">YES</td>
+        <td>No cost to you. Closes short-term rental tax loophole. Tourists/hosts pay.</td>
+      </tr>
+      <tr>
+        <td class="cs-race">Measure TT (City)</td><td>City</td>
+        <td class="cs-pick">YES</td><td>—</td><td class="cs-yes">YES</td>
+        <td>No cost to you as a resident. Hotel guests/tourists pay. Supports LA28 infrastructure.</td>
+      </tr>
+      <tr><td class="cs-race">Judges (all)</td><td>County</td><td class="cs-pick">Highest LACBA rating</td><td class="cs-avoid">NQ candidates / misconduct flags</td><td>EWQ &gt; WQ &gt; Q</td><td>Check lacba.org for final ratings. Leave blank if uncontested with no objection.</td></tr>
+    </tbody>
+  </table>
+  </div>
+</div>
+
+<div style="padding:20px;text-align:center;font-family:'DM Mono',monospace;font-size:11px;color:var(--muted);border-top:1px solid var(--border);margin-top:10px;">
+  SAMPLE BALLOT · 90034 · JUNE 2, 2026 · FISCAL AUDIT v2<br>
+  Verify all candidates and measures at <strong style="color:var(--blue)">lavote.gov</strong> · Judicial ratings at <strong style="color:var(--blue)">lacba.org</strong> · Judicial Performance at <strong style="color:var(--blue)">cjp.ca.gov</strong><br>
+  Not an official ballot document. Research compiled May–June 2026.
+</div>
+
+<script>
+  const selections={};
+  const measures={};
+  const recommendations={gov:'gov-becerra',ltgov:'ltgov-tubbs',sos:'sos-weber',ctrl:'ctrl-cohen',treas:'treas-kounalakis',ag:'ag-bonta',ins:'ins-kim',spi:'spi-rendon',sd28:'sd28-smallwood',ad55:'ad55-bryan',sup3:'sup3-horvath',shr:'shr-strong',assr:'assr-prang',may:'may-miller',ca:'ca-soto',cc:'cc-mejia',cd5:'cd5-oyler',lausd4:'lausd4-patel'};
+  const measureRecs={er:'yes',tc:'yes',tt:'yes'};
+
+  function selectCandidate(race,id){
+    if(selections[race]){const p=document.getElementById(selections[race]);if(p)p.classList.remove('selected')}
+    if(selections[race]===id){delete selections[race];return}
+    selections[race]=id;
+    const el=document.getElementById(id);if(el)el.classList.add('selected');
+  }
+  function voteMeasure(m,v){
+    const y=document.getElementById(m+'-yes'),n=document.getElementById(m+'-no');
+    if(measures[m]===v){y.classList.remove('sel-yes');n.classList.remove('sel-no');delete measures[m];return}
+    y.classList.remove('sel-yes');n.classList.remove('sel-no');
+    measures[m]=v;
+    if(v==='yes')y.classList.add('sel-yes');else n.classList.add('sel-no');
+  }
+  function fillRecommendations(){
+    clearAll();
+    for(const[race,id] of Object.entries(recommendations))selectCandidate(race,id);
+    for(const[m,v] of Object.entries(measureRecs))voteMeasure(m,v);
+  }
+  function clearAll(){
+    for(const id of Object.values(selections)){const el=document.getElementById(id);if(el)el.classList.remove('selected')}
+    for(const k of Object.keys(selections))delete selections[k];
+    for(const m of Object.keys(measures)){
+      const y=document.getElementById(m+'-yes'),n=document.getElementById(m+'-no');
+      if(y)y.classList.remove('sel-yes');if(n)n.classList.remove('sel-no');
+    }
+    for(const k of Object.keys(measures))delete measures[k];
+  }
+</script>
+</body>
+</html>
